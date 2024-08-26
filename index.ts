@@ -1,45 +1,24 @@
-type TBoard = TBoardRow[];
+import { TBoard } from "./types";
+import * as rls from "readline-sync";
+import { createBoard, printBoard } from "./utils";
 
-type TBoardRow = TBoardCell[];
-interface TBoardCell {
-  type: string;
-  hit: boolean;
-  id?: number;
+let board: TBoard;
+
+function playGame() {
+  console.log("Welcome to Battleship 🚢");
+
+  const boardSize = ["4x4", "5x5", "6x6"];
+  const index = rls.keyInSelect(boardSize, "Choose a board size");
+
+  if (index === -1) {
+    console.log("Cancelled setup, please try again");
+    return;
+  }
+
+  console.log(`You chose ${boardSize[index]}. Setting up board now!`);
+  const newBoard = createBoard(parseInt(boardSize[index][0]));
+  console.log(boardSize[index][0]);
+  printBoard(newBoard, true);
 }
 
-const board: TBoard = [
-  [
-    { type: "large", id: 1, hit: false }, // Represents position A0
-    { type: "small", id: 2, hit: false }, // Represents position A1
-    { type: "small", id: 2, hit: false }, // Represents position A2
-  ],
-  [
-    { type: "large", id: 1, hit: true }, // Represents position B0
-    { type: "empty", hit: false }, // Represents position B1
-    { type: "empty", hit: false }, // Represents position B2
-  ],
-  [
-    { type: "large", id: 1, hit: false }, // Represents position C0
-    { type: "empty", hit: false }, // Represents position C1
-    { type: "empty", hit: false }, // Represents position C2
-  ],
-];
-
-function printBoard(board: TBoard, debugMode: boolean) {
-  const rows = ["A", "B", "C"];
-  const displayBoard: { [key: string]: string[] } = {};
-
-  board.forEach((row, index) => {
-    displayBoard[rows[index]] = row.map((cell) => {
-      if (cell.hit) {
-        return "❗";
-      } else if (debugMode) {
-        if (cell.type === "large") return "🔵";
-        if (cell.type === "small") return "🟠";
-      }
-      return "-";
-    });
-  });
-
-  console.table(displayBoard);
-}
+playGame();
