@@ -6,6 +6,9 @@
     "@types/readline-sync": "^1.4.8",
     "bun-types": "latest"
   },
+  "scripts": {
+    "start": "bun index.ts"
+  },
   "peerDependencies": {
     "typescript": "^5.0.0"
   },

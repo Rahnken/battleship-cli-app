@@ -275,16 +275,16 @@ Welcome to Battleship 🚢
 choose a Board Size
 ```
 
-- [ ] On this menu you should be able to either select a size, or type in 4, 5 or 6 in order to make the board a
+- [x] On this menu you should be able to either select a size, or type in 4, 5 or 6 in order to make the board a
 
-- [ ] 4X4 like this:
+- [x] 4X4 like this:
       ![blank-4x4.png](./images/blank-4x4.png)
 
-- [ ] 5X5 like this:
+- [x] 5X5 like this:
 
 ![blank-5x5.png](./images/blank-5x5.png)
 
-- [ ] 6X6 like this:
+- [x] 6X6 like this:
 
   ![blank-6x6.png](./images/blank-6x6.png)
 

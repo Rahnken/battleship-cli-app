@@ -1,60 +1,52 @@
-import { TBoard } from "./types";
+import { initialFleet } from "./config";
+import { Board, BoardCell, CellType } from "./types";
 
-export function createBoard(boardSize: number) {
-  // This is just a thing to check if it prints correctly
-  const board = [
-    [
-      { type: "large", id: 1, hit: false }, // A0
-      // Changed hit to true
-      { type: "small", hit: false }, // A1 👈 Here we can see I changed "hit" to true
-      { type: "small", hit: false }, // A2
-      { type: "empty", hit: false },
-    ],
-    [
-      { type: "large", id: 1, hit: false }, // B0
-      { type: "empty", hit: false }, // B1
-      { type: "empty", hit: false }, // B2
-      { type: "empty", hit: false },
-    ],
-    [
-      { type: "large", id: 1, hit: false }, // C0
-      { type: "empty", hit: false }, // C1
-      { type: "empty", hit: false }, // C2
-      { type: "empty", hit: false },
-    ],
-    [
-      { type: "empty", hit: false }, // D0
-      { type: "empty", hit: false }, // D1
-      { type: "empty", hit: false }, // D2
-      { type: "empty", hit: false },
-    ],
-  ];
-
-  return board;
-}
-
-export function printBoard(board: TBoard, debugMode: boolean) {
-  const displayBoard: { [key: string]: string[] } = {};
-  const rowLabels = generateRowLabels(board.length);
-
-  board.forEach((row, index) => {
-    displayBoard[rowLabels[index]] = row.map((cell) => {
-      if (cell.hit) {
-        return "❗";
-      } else if (debugMode) {
-        if (cell.type === "large") return "🔵";
-        if (cell.type === "small") return "🟠";
-      }
-      return "-";
-    });
-  });
-
-  console.table(displayBoard);
-}
-
-function generateRowLabels(boardSize: number): string[] {
-  console.log("generate Size", boardSize);
+export function generateRowLabels(boardSize: number): string[] {
   const options = ["A", "B", "C", "D", "E", "F"];
+  return options.slice(0, boardSize + 1);
+}
+export function getCellSymbol(cell: BoardCell, debug: boolean): string {
+  if (debug) {
+    if (!cell.hit) {
+      return cell.type !== "empty" ? initialFleet[cell.type].symbol : "-";
+    } else {
+      return cell.type !== "empty" ? "❗" : "x";
+    }
+  } else {
+    return cell.hit ? (cell.type !== "empty" ? "❗" : "x") : "-";
+  }
+}
 
-  return options.slice(0, boardSize);
+export function getCell(board: Board, row: string, col: number): BoardCell {
+  return board.cells[row][col];
+}
+
+export function setCell(
+  board: Board,
+  row: string,
+  col: number,
+  type: CellType,
+  id?: number
+): void {
+  board.cells[row][col] = { type, hit: false, id };
+}
+
+export function hitCell(board: Board, row: string, col: number): void {
+  board.cells[row][col].hit = true;
+}
+
+export const getRandomInt = (max: number) => Math.floor(Math.random() * max);
+
+export function printWin() {
+  return console.log(`
+========================================
+ __     ______  _    _   __          _______ _   _ _ 
+ \\ \\   / / __ \\| |  | |  \\ \\        / /_   _| \\ | | |
+  \\ \\_/ / |  | | |  | |   \\ \\  /\\  / /  | | |  \\| | |
+   \\   /| |  | | |  | |    \\ \\/  \\/ /   | | | . \` | |
+    | | | |__| | |__| |     \\  /\\  /   _| |_| |\\  |_|
+    |_|  \\____/ \\____/       \\/  \\/   |_____|_| \\_(_)
+                                                     
+========================================
+`);
 }
